@@ -43,9 +43,10 @@ var plantillaRestaurantes = '<article class="col-xs-8 col-xs-offset-2 well well-
 
 var cargarPagina = function () {
 	obtenerUbicacion();
+	mostrarRestaurante(restaurantes)
 	$(".name").click(cambiarUbicacion);
 	$("#search-form").submit(filtrarRestaurantes);
-	
+
 };
 
 var filtrarRestaurantes= function (e) {
@@ -65,7 +66,7 @@ var mostrarRestaurante = function (restaurantes) {
 			.replace("__latitud__", restaurante.lat).replace("__longitud__", restaurante.lng).replace("__lat__", restaurante.lat).replace("__lng__", restaurante.lng);
 	});
 	$("#show").html(plantillaFinal);
-		$(".name").click(cambiarUbicacion);
+	$(".name").click(cambiarUbicacion);
 };
 
 var obtenerUbicacion = function (e) {
