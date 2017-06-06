@@ -4,7 +4,7 @@ var restaurantes = [
 		"direccion": "Direccion: Calle Floresta No. 77 Col. Clavería",
 		"lat": "19.4660768", 
 		"lng": "-99.1865509"
-		
+
 	},
 	{
 		"nombre": "La Casa de Toño - Santa Maria la Rivera",
@@ -29,7 +29,7 @@ var restaurantes = [
 		"direccion": "Direccion: Av. Cuauhtémoc No. 439 Col. Piedad Narvarte",
 		"lat": "19.4033427", 
 		"lng": "-99.1557774"
-	
+
 	},
 	{
 		"nombre": "La Casa de Toño - Zona Rosa",
@@ -38,20 +38,36 @@ var restaurantes = [
 		"lng": "-99.1652"
 	}
 ];
-var plantillaRestaurantes = '<article class="well well-sm">' +
-					'<h3>'+'__nombre__'+'</h3>'+
-					'<h4>'+'__Direccion__'+'</h4>'+
-					'<h4>'+'__latitud__'+'</h4>'+
-					'<h4>'+'__longitud__'+'</h4>'+
-				'</article>';
+var plantillaRestaurantes = '<article class="col-xs-8 col-xs-offset-2 well well-sm">' +
+		'<h4 class="name" data-latitude="__lat__" data-longitude="__lng__">__nombre__</h4>' + '<h5>__direccion__</h5>' + '<h5>__latitud__</h5>' + '<h5>__longitud__</h5>' +	'</article>';
 
 var cargarPagina = function () {
 	obtenerUbicacion();
+	$(".name").click(cambiarUbicacion);
 	$("#search-form").submit(filtrarRestaurantes);
+	
 };
-var filtrarRestaurantes = function(){
-	alert("Hola!!");
-}
+
+var filtrarRestaurantes= function (e) {
+	e.preventDefault();
+	var criterioBusqueda = $("#search").val().toLowerCase();
+	var restaurantesFiltrados = restaurantes.filter(function (restaurante) {
+		return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0;
+	});
+	mostrarRestaurante(restaurantesFiltrados);
+};
+
+var mostrarRestaurante = function (restaurantes) {
+	var plantillaFinal = "";
+	restaurantes.forEach(function (restaurante) {
+		plantillaFinal += plantillaRestaurantes.replace("__nombre__", restaurante.nombre)
+			.replace("__direccion__", restaurante.direccion)
+			.replace("__latitud__", restaurante.lat).replace("__longitud__", restaurante.lng).replace("__lat__", restaurante.lat).replace("__lng__", restaurante.lng);
+	});
+	$("#show").html(plantillaFinal);
+		$(".name").click(cambiarUbicacion);
+};
+
 var obtenerUbicacion = function (e) {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(mostrarPosicion);
@@ -60,8 +76,8 @@ var obtenerUbicacion = function (e) {
 	}
 };
 
+
 var mostrarPosicion = function (posicion) {
-	console.log(posicion);
 
 
 	var coordenadas = {
@@ -81,6 +97,19 @@ var mostrarMapa = function (coordenadas) {
 		map: map
 	});
 }
+function cambiarUbicacion() {
+	var latitud = $(this).data("latitude");
+	var longitud = $(this).data("longitude");
+
+	var coordenadas = {
+		lat: latitud,
+		lng: longitud
+	};
+
+	console.log(coordenadas);
+	mostrarMapa(coordenadas);
+}
+
 
 $(document).ready(cargarPagina);
 

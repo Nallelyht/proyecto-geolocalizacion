@@ -2,7 +2,6 @@
 	height: 50vh;
 	width: 100%;
 }
-
 .stylish-input-group .form-control{
 	border-right:0; 
 	box-shadow:0 0 0; 
@@ -11,4 +10,13 @@
 .stylish-input-group button{
     border:0;
     background:transparent;
+}
+#show .well{
+	background-color: rgba(34,34,34,0.3);
+}
+#show h4{
+	cursor: pointer;
+}
+#show h5{
+	color: #555;
 }
